@@ -1,103 +1,110 @@
-# Control a stepper motor from a raspberry Pi
-A library to control a stepper motor on a Raspberry Pi platform
-with a command line program that provides an example of how it
-may be used.
+# SMotor
+Control a stepper motor using a raspberry PI. The main purpose of this
+project was to develop an API to control a stepper motor on a Raspberry 
+Pi platform. The smotor command line tool provides an example of how this 
+API may be used.
 
-# Install
+## Install
+Run the install script after cloning the repo
 
-You can install using pip directly from github using
+```
+./install.sh
+```
+
+Once push to github the project could be installed using the following command.
 
 ```
 sudo python3 -m pip install git+https://github.com/pjaos/rpi_stepper_motor.git
 ```
 
-Or you can copy the git repo to the target system and enter.
+## Uninstall
+Run the install script
 
 ```
-sudo ./install.sh
+./uninstall.sh
 ```
 
-# Uninstall
-
-You can issue the
-
-```
-sudo python3 -m pip uninstall smotor
-```
-
-command or run the uninstall script
+## Using smotor
+The following command line help is available.
 
 ```
-sudo ./uninstall.sh
-```
+smotor -h
+usage: smotor.py [-h] [-d] [-a ANGLE] [-m MODE] [-s SPEED] [-o] [-f] [-r] [-z] [-p] [-n]
 
-# Running
+Example interface to drive a stepper motor.
 
-- Run `smotor -h`
-
-and the help text is displayed
-
-```
-Usage: Simple web server.
-
-Options:
+optional arguments:
   -h, --help            show this help message and exit
-  --port=PORT           Followed by the web server port (default=8080)
-  --root=ROOT           Followed by the web server root path
-  --cgi=CGI             A folder (in the root path) containing the cgi scripts
-                        (default=/cgi-bin).
-  --enable_auto_start   Auto start when this computer starts.
-  --user=USER           The user name when the --enable_auto_start argument is
-                        used (default=pi).
-  --disable_auto_start  Disable auto starting when this computer starts.
-  --check_auto_start    Check the status of an auto started ogsolar instance.
+  -d, --debug           Enable debugging.
+  -a ANGLE, --angle ANGLE
+                        Set the angle to move the motor spindle. Set a -ve angle to reverse the motor direction (anti clockwise). If the -r option is not used then the angle set is an absolute angle with reference to the
+                        zero/reference position.
+  -m MODE, --mode MODE  The mode of the stepper motor. 1 = Full Step, 2 = 1/2 step, 4 = 1/4 step, 8 = 1/8 step, 16 = 1/16 step, 32 = 1/32 step (default=2).
+  -s SPEED, --speed SPEED
+                        Set the speed of the motor in revolutions per second (default=1.0).
+  -o, --on              Turn the motor current on. The motor will hold it's position and can be moved.
+  -f, --off             Turn the motor current off. The motor will not draw power and can be manually moved.
+  -r, --relative        Turn relative to the current position. By default the absolute position of the motor spindle is set.
+  -z, --zero            Set the rzero/reference position of the motor to it's current position.
+  -p, --stop            Stop the motor if it is running. If this option is used then the absolute position of the motor is lost.
+  -n, --non_stop        Run the motor non stop. If this option is used then the absolute position of the motor is lost.
 ```
 
-The `--root` path must be provided and should point to the web server root folder.
 
-The --port options can be used to change the web server TCP port.
-
-The `--cgi` folder is optional.
-
-
-# Configuring Auto start
-
-The web server can be configured to auto start.
-
-E.G
+### Move relative to the current position
+To move the motor spindle 90 degrees.
 
 ```
-sudo ws --port 80 --root /www --enable_auto_start
+smotor -a 90 -r
+INFO:  Set Mode to 1/2.
+INFO:  Moving 90.0° at 1.0 revs/sec.
+INFO:  The absolute position of the motor is now 270.0°
 ```
 
-You can check thw web server is running using.
+### Set zero position
+To set the current position as reference/zero position.
 
 ```
-sudo ws --check_auto_start
-INFO:  ● ws.service
-INFO:     Loaded: loaded (/etc/systemd/system/ws.service; enabled; vendor preset: enabled)
-INFO:     Active: active (running) since Sat 2021-10-02 16:44:00 BST; 32s ago
-INFO:   Main PID: 13137 (ws)
-INFO:      Tasks: 2 (limit: 2059)
-INFO:     CGroup: /system.slice/ws.service
-INFO:             ├─13137 /bin/sh /usr/local/bin/ws --port 80 --root /www
-INFO:             └─13138 python3.9 -m ws.ws --port 80 --root /www
-INFO:  
-INFO:  Oct 02 16:44:33 raspberrypi ws[13137]: WARNING:root:======= GET STARTED =======
-INFO:  Oct 02 16:44:33 raspberrypi ws[13137]: WARNING:root:Host: 192.168.0.164
-INFO:  Oct 02 16:44:33 raspberrypi ws[13137]: Connection: keep-alive
-INFO:  Oct 02 16:44:33 raspberrypi ws[13137]: Accept: application/json, text/javascript, */*; q=0.01
-INFO:  Oct 02 16:44:33 raspberrypi ws[13137]: User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36
-INFO:  Oct 02 16:44:33 raspberrypi ws[13137]: X-Requested-With: XMLHttpRequest
-INFO:  Oct 02 16:44:33 raspberrypi ws[13137]: Referer: http://192.168.0.164/
-INFO:  Oct 02 16:44:33 raspberrypi ws[13137]: Accept-Encoding: gzip, deflate
-INFO:  Oct 02 16:44:33 raspberrypi ws[13137]: Accept-Language: en,en-US;q=0.9
-INFO:  Oct 02 16:44:33 raspberrypi ws[13137]: 192.168.0.249 - - [02/Oct/2021 16:44:33] "GET /table2.json?_=1633188933590 HTTP/1.1" 200 -
+smotor -z
+INFO:  Set Mode to 1/2.
+INFO:  Set the current motor position to the zero/reference position.
 ```
 
-# Disable auto start
-You may stop the web server running and disable is starting on boot using.
+### Absolute move
+Move relative to the zero position
 
 ```
-sudo ws --disable_auto_start
+smotor -a 90 -r
+INFO:  Set Mode to 1/2.
+INFO:  Moving 90.0° at 1.0 revs/sec.
+INFO:  The absolute position of the motor is now 90.0°
+pi@raspberrypi:~/pip/smotor $ smotor -a 90 -r
+INFO:  Set Mode to 1/2.
+INFO:  Moving 90.0° at 1.0 revs/sec.
+INFO:  The absolute position of the motor is now 180.0°
+pi@raspberrypi:~/pip/smotor $ smotor -a 90 -r
+INFO:  Set Mode to 1/2.
+INFO:  Moving 90.0° at 1.0 revs/sec.
+INFO:  The absolute position of the motor is now 270.0°
+pi@raspberrypi:~/pip/smotor $ smotor -z
+INFO:  Set Mode to 1/2.
+INFO:  Set the current motor position to the zero/reference position.
+pi@raspberrypi:~/pip/smotor $ smotor -a 90
+INFO:  Set Mode to 1/2.
+INFO:  Moving 90.0° at 1.0 revs/sec.
+INFO:  The absolute position of the motor is now 90.0°
+pi@raspberrypi:~/pip/smotor $ smotor -a 180
+INFO:  Set Mode to 1/2.
+INFO:  Moving 180.0° at 1.0 revs/sec.
+INFO:  The absolute position of the motor is now 180.0°
+pi@raspberrypi:~/pip/smotor $ smotor -a 0
+INFO:  Set Mode to 1/2.
+INFO:  Moving 0.0° at 1.0 revs/sec.
+INFO:  The absolute position of the motor is now 0.0°
+pi@raspberrypi:~/pip/smotor $ smotor -a -90
+INFO:  Set Mode to 1/2.
+INFO:  Moving -90.0° at 1.0 revs/sec.
+INFO:  The absolute position of the motor is now -90.0°
+
 ```
+
