@@ -188,6 +188,7 @@ class SMotor(object):
 
     def stop(self):
         """@brief  Stop motor moving."""
+        self._pi.wave_tx_stop() # We must stop before clearing the waves or the step pin will be left running
         self._pi.wave_clear()     # clear existing waves
 
     def stepMotor(self, stepCount, freqHz, repeat=False):

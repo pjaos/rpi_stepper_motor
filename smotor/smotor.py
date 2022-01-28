@@ -10,10 +10,6 @@ from   p3lib.helper import logTraceBack
 
 from   smotor.smotor_ctrl import SMotor
 
-# TODO
-# Add run permanently option.
-#
-
 class StepItError(Exception):
     pass
 
@@ -72,6 +68,9 @@ class StepIt(object):
 
         self._uio.info("Motor current: {}".format(enabledS))
         self._sMotor.enableHold(not enabled)
+        if not enabled:
+            #This ensure the step pin stops
+            self._sMotor.stop()
 
     def zero(self):
         """@brief Reset the reference/zero position to the current position."""
@@ -94,7 +93,7 @@ def main():
     uio = UIO()
 
     try:
-        parser = argparse.ArgumentParser(description="Example interface to drive a stepper motor.",
+        parser = argparse.ArgumentParser(description="Example interface to drive a stepper motor. Before running this tool run the 'sudo pigpiod -s 1' command on the Raspberry PI.",
                                          formatter_class=argparse.RawDescriptionHelpFormatter)
         parser.add_argument("-d", "--debug",    action='store_true', help="Enable debugging.")
         parser.add_argument("-a", "--angle",    type=float, help="Set the angle to move the motor spindle. Set a -ve angle to reverse the motor direction (anti clockwise). If the -r option is not used then the angle set is an absolute angle with reference to the zero/reference position.", default=None)
