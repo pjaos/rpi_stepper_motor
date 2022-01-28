@@ -1,7 +1,7 @@
 # SMotor
 Control a stepper motor using a raspberry PI. The main purpose of this
-project was to develop an API to control a stepper motor on a Raspberry 
-Pi platform. The smotor command line tool provides an example of how this 
+project was to develop an API to control a stepper motor on a Raspberry
+Pi platform. The smotor command line tool provides an example of how this
 API may be used.
 
 ## Install
@@ -23,6 +23,12 @@ Run the install script
 ```
 ./uninstall.sh
 ```
+## Connections to Raspberry PI
+
+The raspberry PI should be connected to a 4 wire bipolar stepper motor as detailed in the
+schematic.
+
+![alt text](images/schematic.png" "image Title")
 
 ## Using smotor
 The following command line help is available.
@@ -107,4 +113,3 @@ INFO:  Moving -90.0° at 1.0 revs/sec.
 INFO:  The absolute position of the motor is now -90.0°
 
 ```
-
