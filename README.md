@@ -1,20 +1,21 @@
 # SMotor
-Control a stepper motor using a raspberry PI. The main purpose of this
-project was to develop an API to control a stepper motor on a Raspberry
-Pi platform. The smotor command line tool provides an example of how this
-API may be used.
+Provides details and a python library to control a stepper motor using a raspberry PI. The main purpose of this project was to develop an API to control a stepper motor on a Raspberry Pi platform.
+
+The smotor command line tool provides an example of how this API may be used.
 
 ## Install
-Run the install script after cloning the repo
+The Raspberry PI will need git, python3 (>=3.8) and pip installed to install this package.
+
+Run the install script after cloning the repo onto the raspberry PI
 
 ```
 ./install.sh
 ```
 
-Once push to github the project could be installed using the following command.
+or run the following to install direct from github onto the raspberry PI.
 
 ```
-sudo python3 -m pip install git+https://github.com/pjaos/rpi_stepper_motor.git
+sudo python3 -m pip install git+https://github.com/pjaos/rpi_stepper_motor
 ```
 
 ## Uninstall
