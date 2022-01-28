@@ -5,10 +5,10 @@ set -e
 #python3 -m pyflakes *.py
 
 # Install only for current user
-python3 -m pip install .
+#python3 -m pip install .
 
 #install for all users
-#sudo python3 -m pip install .
+sudo python3 -m pip install .
 
 #Ensure all files are flush to disk/flash
 sync
