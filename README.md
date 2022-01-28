@@ -28,7 +28,7 @@ Run the install script
 The raspberry PI should be connected to a 4 wire bipolar stepper motor as detailed in the
 schematic.
 
-![alt text](images/schematic.png" "image Title")
+![alt text](images/schematic.png "Schematic")
 
 ## Using smotor
 The following command line help is available.
